@@ -180,13 +180,6 @@ jobs:
             image:
               tag: ${{ cloudbees.scm.sha }}
             fmKey: ${{ secrets.FM_TOKEN }}
-      - uses: cloudbees-io/kustomize-deploy@v1
-        name: Deploy to cluster
-        kind: deploy
-        with:
-          kustomization-base-dir: ${{ cloudbees.workspace }}/k8s/base
-          kustomization-overlays-dir: ${{ cloudbees.workspace }}/k8s/overlays/prod
-          environment-variables: "{}"
       - name: Publish evidence
         uses: cloudbees-io/publish-evidence-item@v1
         with:
