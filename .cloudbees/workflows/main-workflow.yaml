@@ -11,7 +11,7 @@ permissions:
   id-token: write
 env:
   APP_NAME: hackers-organized
-  NAMESPACE: hackers-organized-test
+  NAMESPACE: hackers-organized-staging
 jobs:
   test:
     outputs:
