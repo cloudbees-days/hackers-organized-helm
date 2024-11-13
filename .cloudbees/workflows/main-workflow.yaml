@@ -86,9 +86,9 @@ jobs:
         with:
           content: |-
             ## Built and pushed image to docker hub
-            
+
             [Docker Hub](https://hub.docker.com/repository/docker/ldonleycb/hackers-organized/tags)
-            
+
             Deployed hackers-organized:${{ cloudbees.scm.sha }}
           format: MARKDOWN
     needs: test
@@ -142,7 +142,7 @@ jobs:
           CRITICAL_COUNT=$(jq '[.issues[] | select(.severity=="CRITICAL")] | length' sonar-issues.json)
           MAJOR_COUNT=$(jq '[.issues[] | select(.severity=="MAJOR")] | length' sonar-issues.json)
           MINOR_COUNT=$(jq '[.issues[] | select(.severity=="MINOR")] | length' sonar-issues.json)
-          
+
           echo "${BLOCKER_COUNT}" >> $CLOUDBEES_OUTPUTS/BLOCKER_COUNT
           echo "${CRITICAL_COUNT}" >> $CLOUDBEES_OUTPUTS/CRITICAL_COUNT
           echo "${MAJOR_COUNT}" >> $CLOUDBEES_OUTPUTS/MAJOR_COUNT
@@ -152,7 +152,7 @@ jobs:
         with:
           content: |-
             ## SonarQube Analysis Results
-            
+
             | Severity             | Issue Count |
             |----------------------|-------------|
             | BLOCKER_COUNT        | ${{ steps.FetchSonarQubeIssues.outputs.BLOCKER_COUNT }} |
@@ -179,21 +179,21 @@ jobs:
           values: |
             image:
               tag: ${{ cloudbees.scm.sha }}
-            fmKey: ${{ secret.FM_TOKEN }}
+            fmKey: ${{ secrets.FM_TOKEN }}
       - uses: cloudbees-io/kustomize-deploy@v1
         name: Deploy to cluster
         kind: deploy
         with:
           kustomization-base-dir: ${{ cloudbees.workspace }}/k8s/base
           kustomization-overlays-dir: ${{ cloudbees.workspace }}/k8s/overlays/prod
-          environment-variables: '{}'
+          environment-variables: "{}"
       - name: Publish evidence
         uses: cloudbees-io/publish-evidence-item@v1
         with:
           content: |-
             ## Deployed environment
             [Production frontend](https://hackers-organized-prod.preview.cb-demos.io/)
-            
+
             Running hackers-organized:${{ cloudbees.scm.sha }}
           format: MARKDOWN
     needs:
